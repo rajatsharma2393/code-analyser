@@ -1,25 +1,28 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from graph import build_graph
-from nodes.code_indexer import get_vector_store
+
+from graphs.index_graph import build_index_graph
+from graphs.query_graph import build_query_graph
 
 app = FastAPI()
-graph = build_graph()
-store = get_vector_store()
+
+index_graph = build_index_graph()
+query_graph = build_query_graph()
 
 class IndexRequest(BaseModel):
     workspace_path: str
 
+class QueryRequest(BaseModel):
+    query: str
+
 @app.post("/index")
-def index_code(req: IndexRequest):
-    return graph.invoke({
+def index_codebase(req: IndexRequest):
+    return index_graph.invoke({
         "workspace_path": req.workspace_path
     })
 
-@app.get("/debug/vectors")
-def debug_vectors(limit: int = 5):
-    data = store.all()[:limit]
-    return {
-        "stored_chunks": len(store.all()),
-        "samples": data
-    }
+@app.post("/query")
+def query_codebase(req: QueryRequest):
+    return query_graph.invoke({
+        "query": req.query
+    })

@@ -1,14 +1,13 @@
 from langgraph.graph import StateGraph, END
 from state import GraphState
-
 from nodes.classifier import classifier_node
 from nodes.retriever import retriever_node
 from nodes.reasoner import reasoner_node
 
-def route_by_intent(state: GraphState):
+def route_by_intent(state):
     return state["intent"]
 
-def build_graph():
+def build_query_graph():
     graph = StateGraph(GraphState)
 
     graph.add_node("classifier", classifier_node)
