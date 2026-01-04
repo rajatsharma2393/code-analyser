@@ -3,6 +3,8 @@ uvicorn
 langgraph
 sentence-transformers
 numpy
+langchain
+langchain-community
 
 tree-sitter==0.20.4
 tree-sitter-languages
